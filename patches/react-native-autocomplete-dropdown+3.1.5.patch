@@ -1,0 +1,31 @@
+diff --git a/node_modules/react-native-autocomplete-dropdown/src/RightButton.js b/node_modules/react-native-autocomplete-dropdown/src/RightButton.js
+index 5f566bd..ce15d1f 100644
+--- a/node_modules/react-native-autocomplete-dropdown/src/RightButton.js
++++ b/node_modules/react-native-autocomplete-dropdown/src/RightButton.js
+@@ -1,6 +1,7 @@
+ import React, { memo, useEffect, useRef } from 'react'
++import { Text } from 'react-native'
+ import { ActivityIndicator, Animated, Easing, StyleSheet, TouchableOpacity, View } from 'react-native'
+-import { ChevronDown, XCircle } from 'react-native-feather'
++
+ 
+ export const RightButton = memo(
+   ({
+@@ -42,7 +43,7 @@ export const RightButton = memo(
+         }}>
+         {!loading && showClear && (
+           <TouchableOpacity onPress={onClearPress} style={styles.clearButton}>
+-            {ClearIconComponent ?? <XCircle width={18} stroke="#aeb4c6" />}
++            {ClearIconComponent ?? <Text>X</Text>}
+           </TouchableOpacity>
+         )}
+         {loading && <ActivityIndicator color="#999" />}
+@@ -54,7 +55,7 @@ export const RightButton = memo(
+         {showChevron && (
+           <Animated.View style={{ transform: [{ rotate: chevronSpin }] }}>
+             <TouchableOpacity onPress={onChevronPress} style={styles.chevronButton}>
+-              {ChevronIconComponent ?? <ChevronDown width={20} stroke="#727992" />}
++              {ChevronIconComponent ?? <Text>^</Text>}
+             </TouchableOpacity>
+           </Animated.View>
+         )}
