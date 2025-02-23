@@ -5,6 +5,7 @@ import Text from './Text';
 
 interface ButtonProps {
   primary?: boolean;
+  disabled?: boolean;
 }
 
 const StyledButton = styled.TouchableOpacity<ButtonProps>`
@@ -12,7 +13,7 @@ const StyledButton = styled.TouchableOpacity<ButtonProps>`
   border-radius: 8px;
   align-items: center;
   justify-content: center;
-  background-color: ${({ primary, theme }) =>
+  background-color: ${({primary, theme}) =>
     primary ? theme.primary : theme.surface};
   elevation: 2;
   shadow-color: #000;
@@ -21,13 +22,11 @@ const StyledButton = styled.TouchableOpacity<ButtonProps>`
   shadow-radius: 4px;
 `;
 
-const Button: React.FC<ButtonProps & { onPress: () => void; title: string }> = ({
-  title,
-  onPress,
-  primary,
-}) => {
+const Button: React.FC<
+  ButtonProps & {onPress: () => void; title: string;}
+> = ({title, onPress, primary, disabled}) => {
   return (
-    <StyledButton onPress={onPress} primary={primary}>
+    <StyledButton disabled={disabled} onPress={onPress} primary={primary}>
       <Text bold color={primary ? 'white' : undefined}>
         {title}
       </Text>

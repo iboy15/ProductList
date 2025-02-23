@@ -1,88 +1,79 @@
-import React, {useEffect, useCallback} from 'react';
-import {FlatList, ActivityIndicator, RefreshControl} from 'react-native';
-import styled, {useTheme} from 'styled-components/native';
-import {useNavigation} from '@react-navigation/native';
-import {useSelector, useDispatch} from 'react-redux';
+import React, { useEffect, useCallback } from "react";
+import { FlatList, ActivityIndicator, RefreshControl } from "react-native";
+import styled, { useTheme } from "styled-components/native";
+import { useNavigation } from "@react-navigation/native";
+import { useSelector, useDispatch } from "react-redux";
 
-import {ProductItem} from '@components/molecules';
-import {fetchProducts, setRefreshing, resetProducts, loadMoreProducts} from '@store/productsSlice';
-import {RootState} from '@store/store';
-import { addCart } from '@store/cartSlice';
+import { ProductItem } from "@components/molecules";
+import {
+  fetchProducts,
+  setRefreshing,
+  resetProducts,
+  loadMoreProducts,
+} from "@store/productsSlice";
+import { RootState } from "@store/store";
+import { addCart } from "@store/cartSlice";
 
-interface ProductList{
-  category:string
+interface ProductListProps {
+  category: string;
 }
 
 const Container = styled.View`
   flex: 1;
-  background-color: ${({theme}) => theme.background};
+  background-color: ${({ theme }) => theme.background};
 `;
 
-const LoadingIndicator = styled(ActivityIndicator).attrs(({theme}) => ({
+const LoadingIndicator = styled(ActivityIndicator).attrs(({ theme }) => ({
   color: theme.primary,
 }))`
   margin-top: 20px;
 `;
 
-const ProductList = ({category}:ProductList) => {
+const ProductList = ({ category }: ProductListProps) => {
   const theme = useTheme();
-
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   // Get state from Redux
-  const {
-    products,
-    loading,
-    error,
-    isRefreshing,
-    hasMore,
-    limit,
-    skip,
-  } = useSelector((state: RootState) => state.products);
+  const { products, loading, error, isRefreshing, hasMore, limit, skip } =
+    useSelector((state: RootState) => state.products);
 
   // Filter products based on the selected category
-  const filteredProducts = category === 'all' ? products : products.filter(product => product.category === category);
+  const filteredProducts =
+    category === "all"
+      ? products
+      : products.filter((product) => product.category === category);
 
-  // // Fetch products from the API
-  // const fetchData = useCallback(async () => {
-  //   await dispatch(fetchProducts({limit, skip}));
-  // }, [limit, skip, dispatch]);
 
-  // // Initial data fetch
-  // useEffect(() => {
-  //   fetchData();
-  // }, [fetchData]);
+  
 
   // Handle pull-to-refresh
   const handleRefresh = useCallback(() => {
-    dispatch(resetProducts()); // Reset the products list
+    dispatch(resetProducts());
     dispatch(setRefreshing(true));
-    dispatch(fetchProducts({limit, skip: 0})); // Fetch the first page
-  }, [dispatch, limit]);
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
   // Handle loading more products
   const handleLoadMore = useCallback(() => {
     if (!loading && hasMore) {
-      dispatch(loadMoreProducts()); // Dispatch action to load more products
+      dispatch(loadMoreProducts());
     }
   }, [loading, hasMore, dispatch]);
 
+  const handleAddToCart = (id: number, stock: number) => {
+    if (stock === 0) return; // Prevent adding out-of-stock items
 
-
-  
-    const handleAddToCart = (id) => {
-      // Format the product data to match the API's expected structure
-      const productToAdd = {
-        id: id,
-        quantity: 1, // Default quantity is 1
-      };
-  
-      // Dispatch the addCart action
-      dispatch(addCart([productToAdd])); // Pass an array of products
-  
+    const productToAdd = {
+      id: id,
+      quantity: 1,
     };
 
-  // Render loading indicator while fetching initial data
+    dispatch(addCart([productToAdd]));
+  };
+
+
+
   if (loading && skip === 0 && filteredProducts.length === 0) {
     return (
       <Container>
@@ -94,18 +85,25 @@ const ProductList = ({category}:ProductList) => {
   return (
     <Container>
       <FlatList
-      contentContainerStyle={{paddingTop: 8}}
-      numColumns={2}
+        contentContainerStyle={{ paddingTop: 8 }}
+        numColumns={2}
         data={filteredProducts}
-        keyExtractor={item => item.id.toString()} // Use a unique identifier
-        renderItem={({item}) => (
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
           <ProductItem
             product={item}
-            handleAddToCart={() =>
-              handleAddToCart(item.id)
+            discountedPrice={item.discountedPrice} // Show discounted price
+            stock={item.stock} // Show stock
+            rating={item.rating} // Show rating
+            handleAddToCart={() => handleAddToCart(item.id, item.stock)}
+            isDisabled={item.stock === 0} // Disable button if out of stock
+            onCardPress={() =>
+              navigation.navigate("ProductDetails", { productId: item.id })
             }
+
           />
         )}
+
         refreshControl={
           <RefreshControl
             refreshing={isRefreshing || loading}
@@ -114,10 +112,10 @@ const ProductList = ({category}:ProductList) => {
             tintColor={theme.primary}
           />
         }
-        onEndReached={handleLoadMore} // Trigger when the user scrolls to the end
-        onEndReachedThreshold={0.5} // Load more when 50% of the list is visible
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
         ListFooterComponent={
-          loading && skip > 0 ? <LoadingIndicator size="large" /> : null // Show loading indicator at the bottom
+          loading && skip > 0 ? <LoadingIndicator size="large" /> : null
         }
       />
     </Container>

@@ -10,7 +10,8 @@
       "@utils/*": ["./utils/*"],
       "@data/*": ["./data/*"],
       "@context/*": ["./context/*"],
-      "@store/*": ["./store/*"]
+      "@store/*": ["./store/*"],
+      "@assets/*": ["./assets/*"]
     },
     "types": ["@types/styled-components-react-native"]
   }

@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { Product } from '@types/product';
 import { API_URL } from '@env';
 import Toast from 'react-native-simple-toast';
 

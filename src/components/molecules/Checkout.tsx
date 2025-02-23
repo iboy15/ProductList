@@ -69,7 +69,7 @@ const Checkout = React.forwardRef(({ cartItems, totalPrice, onClose }, ref) => {
         {cartItems.map(item => (
           <ItemRow key={item.id}>
             <ItemText>{item.title}</ItemText>
-            <ItemText>${item.price * item.quantity}</ItemText>
+            <ItemText>${(item.price * item.quantity).toFixed(2)}</ItemText>
           </ItemRow>
         ))}
         <TotalRow>

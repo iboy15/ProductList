@@ -19,6 +19,7 @@ module.exports = {
           '@data': './src/data',
           '@context': './src/context',
           '@store': './src/store',
+          '@assets': '/src/assets'
         },
       },
     ],
