@@ -25,15 +25,17 @@
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.24.0",
     "react-native-pager-view": "^6.7.0",
+    "react-native-raw-bottom-sheet": "^3.0.0",
     "react-native-safe-area-context": "^5.2.0",
     "react-native-screens": "^4.9.0",
+    "react-native-simple-toast": "^3.3.2",
     "react-native-tab-view": "^4.0.5",
     "react-redux": "^9.2.0",
     "redux-persist": "^6.0.0",
     "styled-components": "^6.1.15"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.2",
+    "@babel/core": "^7.26.9",
     "@babel/preset-env": "^7.25.3",
     "@babel/runtime": "^7.25.0",
     "@react-native-community/cli": "15.0.1",

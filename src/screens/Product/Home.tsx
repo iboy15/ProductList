@@ -80,7 +80,6 @@ const Home = () => {
     return <ProductList category={route.key} />;
   };
 
-  console.log('theme', theme.tabBarBackground);
 
   if (routes.length === 0) {
     <Container>

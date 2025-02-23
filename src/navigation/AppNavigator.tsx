@@ -3,6 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { RootStackParamList } from '@types/navigation';
 import { Home } from '@screens/Product';
+import { Cart } from '@screens/Product';
+
 
 // import ProductDetails from '../screens/ProductDetails';
 // import Cart from '../screens/Cart';
@@ -30,11 +32,11 @@ const AppNavigator = () => {
           options={{ title: 'Product Details' }}
         /> */}
         {/* Cart Screen */}
-        {/* <Stack.Screen
+        <Stack.Screen
           name="Cart"
           component={Cart}
-          options={{ title: 'Shopping Cart' }}
-        /> */}
+          options={{ title: 'Cart' }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

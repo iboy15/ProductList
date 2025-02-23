@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {TouchableOpacity, ActivityIndicator} from 'react-native';
+import {TouchableOpacity, ActivityIndicator, Image} from 'react-native';
 import styled, {useTheme} from 'styled-components/native';
 
 import {AutocompleteDropdown} from 'react-native-autocomplete-dropdown';
@@ -8,6 +8,7 @@ import {fetchSearchResults, clearSearchResults} from '@store/searchSlice'; // Im
 import {RootState} from '@store/store';
 import {Text} from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
+import { useNavigation } from '@react-navigation/native';
 
 // Styled components
 const SearchContainer = styled.View`
@@ -40,6 +41,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
   onSearchResultPress,
 }) => {
   const theme = useTheme();
+  const navigation = useNavigation()
   const dispatch = useDispatch();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -113,6 +115,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
             suggestionsListTextStyle={{
               color: theme.text,
             }}
+            // RightIconComponent={<Image style={{height:15,width:15}} source={require('../../assets/icons/dropdownicon.png')} />}
             renderItem={item => {
               return (
                 <SearchItemContainer>
@@ -127,16 +130,15 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
                 </SearchItemContainer>
               );
             }}
+            showChevron={false}
           />
-          {/* <TouchableOpacity onPress={() => setIsSearchVisible(false)}>
-              <Text>Cancel</Text>
-            </TouchableOpacity> */}
         </>
-        {/* ) : (
-          <TouchableOpacity onPress={() => setIsSearchVisible(true)}>
-            <Text>Search</Text>
-          </TouchableOpacity>
-        )} */}
+        <TouchableOpacity onPress={()=>navigation.navigate('Cart')}>
+          <Image
+            style={{height: 32, width: 32}}
+            source={require('../../assets/icons/cart.png')}
+          />
+        </TouchableOpacity>
       </SearchContainer>
     </>
   );

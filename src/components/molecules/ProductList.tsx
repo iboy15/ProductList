@@ -7,6 +7,11 @@ import {useSelector, useDispatch} from 'react-redux';
 import {ProductItem} from '@components/molecules';
 import {fetchProducts, setRefreshing, resetProducts, loadMoreProducts} from '@store/productsSlice';
 import {RootState} from '@store/store';
+import { addCart } from '@store/cartSlice';
+
+interface ProductList{
+  category:string
+}
 
 const Container = styled.View`
   flex: 1;
@@ -19,9 +24,9 @@ const LoadingIndicator = styled(ActivityIndicator).attrs(({theme}) => ({
   margin-top: 20px;
 `;
 
-const ProductList = ({category}) => {
+const ProductList = ({category}:ProductList) => {
   const theme = useTheme();
-  const navigation = useNavigation();
+
   const dispatch = useDispatch();
 
   // Get state from Redux
@@ -62,6 +67,21 @@ const ProductList = ({category}) => {
     }
   }, [loading, hasMore, dispatch]);
 
+
+
+  
+    const handleAddToCart = (id) => {
+      // Format the product data to match the API's expected structure
+      const productToAdd = {
+        id: id,
+        quantity: 1, // Default quantity is 1
+      };
+  
+      // Dispatch the addCart action
+      dispatch(addCart([productToAdd])); // Pass an array of products
+  
+    };
+
   // Render loading indicator while fetching initial data
   if (loading && skip === 0 && filteredProducts.length === 0) {
     return (
@@ -81,8 +101,8 @@ const ProductList = ({category}) => {
         renderItem={({item}) => (
           <ProductItem
             product={item}
-            onPress={() =>
-              navigation.navigate('ProductDetails', {product: item})
+            handleAddToCart={() =>
+              handleAddToCart(item.id)
             }
           />
         )}

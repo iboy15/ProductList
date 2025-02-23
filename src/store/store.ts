@@ -5,12 +5,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage'; // Ensure 
 import productsReducer from './productsSlice';
 import themeReducer from './themeSlice';
 import searchReducer from './searchSlice';
+import cartReducer from './cartSlice'
 
 // Persist configuration
 const persistConfig = {
   key: 'root', // Key for the persisted state
   storage: AsyncStorage, // Storage engine
-  whitelist: ['products',], // Optional: Only persist these reducers
+  whitelist: ['products','cart'], // Optional: Only persist these reducers
   // blacklist: ['search'], // Optional: Exclude this reducer from persistence
 };
 
@@ -18,6 +19,7 @@ const persistConfig = {
 const persistedProductsReducer = persistReducer(persistConfig, productsReducer);
 const persistedThemeReducer = persistReducer(persistConfig, themeReducer);
 const persistedSearchReducer = persistReducer(persistConfig, searchReducer);
+const persistedCartReducer = persistReducer(persistConfig, cartReducer);
 
 // Configure the store
 const store = configureStore({
@@ -25,6 +27,7 @@ const store = configureStore({
     products: persistedProductsReducer,
     search: persistedSearchReducer,
     theme: persistedThemeReducer,
+    cart : persistedCartReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
