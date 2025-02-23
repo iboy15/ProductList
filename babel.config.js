@@ -1,8 +1,8 @@
 // babel.config.js
 module.exports = {
   presets: [
-    'module:metro-react-native-babel-preset',
     '@babel/preset-typescript', // Add TypeScript support
+    'module:@react-native/babel-preset',
   ],
   plugins: [
     [
